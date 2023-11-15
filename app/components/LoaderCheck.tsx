@@ -8,7 +8,7 @@ export default function LoaderCheck() {
     const router = useRouter();
 
     return <>
-        
+
     </>
 
 }
