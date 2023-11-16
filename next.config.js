@@ -1,16 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
-    images: {
-        remotePatterns: [
-			{
-				protocol: "https",
-				hostname: "github.com",
-				port: "",
-				pathname: "/*.png",
-			},
-		],
-    },
+    output: "export",
+    basePath: "/quiz-web-app",
+    
 }
 
 module.exports = nextConfig
