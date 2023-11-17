@@ -11,18 +11,19 @@ Chart.register(ArcElement,Tooltip);
 
 
 export default function ResultWidget({results}:{results:QuizResult[]}){
+    const correctAnswerNumber = results.filter(result => result.isCorrect === true).length;
     const chart_data = {
         labels: ['Correct', 'Incorrect'],
         datasets: [
           {
-            data: [12, 19],
-            backgroundColor: ['#FF6384', '#36A2EB',],
-            hoverBackgroundColor: ['#FF6384', '#36A2EB'],
+            data: [correctAnswerNumber, results.length - correctAnswerNumber],
+            backgroundColor: ['#27BE16', '#DE595B',],
+            hoverBackgroundColor: ['#27BE16', '#DE595B'],
           },
         ],
     };
     const chart_options = {
-        cutout: '70%', // Adjust the cutout percentage for the Doughnut hole
+        cutout: '60%', // Adjust the cutout percentage for the Doughnut hole
     };
     return <Flex gap={6} my={4}direction={"column"}>
         <Flex bg={"#4950AE"}  p={4} >
