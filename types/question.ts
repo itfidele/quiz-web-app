@@ -1,4 +1,3 @@
-import { shuffle } from "@/utils/functions";
 
 export interface Question{
     category: string;
