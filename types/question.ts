@@ -23,26 +23,21 @@ export class Quiz{
         return this.questions.length;
     }
 
-    getChoices(index:number) :string[] {
-        return shuffle(this.questions[index].answers);
-    }
-
     getQuestion(index:number):Question{
         return this.questions[index];
     }
 
     
-    isCorrect(index:number, answer:string):boolean{
-        if (index>this.questions.length-1 || index<0){
-            return false;
-        }
-        return this.questions[index].correctAnswer === answer;
+    isCorrect(id:string, answer:string):boolean{
+        const question = this.questions.find(question => question.id === id);
+        return question?.correctAnswer === answer;
     }
 
     
     getQuestions(){
         return this.questions;
     }
+
 
     getQuestionsByCategory(category:string){
         return this.questions.filter(question => question.category === category);
