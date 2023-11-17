@@ -6,8 +6,7 @@ import React, { Suspense } from "react";
 import LoadingSpinner from "./LoadingSpinner";
 
 // how to pass a function with prop type
-export interface QuizResult{
-    question:Question,
+export interface QuizResult extends Question{
     isCorrect:boolean,
     selectedAnswer:string
 }
@@ -19,23 +18,21 @@ export default function QuestionWidget({ questions,onResult }:{ questions:Questi
     const [selectedAnswer,setSelectedAnswer] = React.useState<number>(-1);
     const [results,setResults] = React.useState<QuizResult[]>([]);
     const [question,setQuestion] = React.useState<Question>(questions[currentQuestion]);
-    const quiz = new Quiz(questions);
     const isLastQuestion = currentQuestion == questions.length-1;
     
-    const onSubmit = ()=>{
-        setResults([...results,{question:question,isCorrect: question.answers[currentQuestion] == question.correctAnswer,selectedAnswer:question.answers[currentQuestion]}]);
-        setSelectedAnswer(-1);
-        alert(results.length)
-        onResult(results);
-    }
+   
     
 
     function next(index:number){
-        setResults([...results,{question:question,isCorrect: question.answers[index] == question.correctAnswer,selectedAnswer:question.answers[index]}]);
+        setResults([...results,{...question,isCorrect: question.answers[index] == question.correctAnswer,selectedAnswer:question.answers[index]}]);
         setSelectedAnswer(-1);
         if (!isLastQuestion) {  
             setQuestion(questions[currentQuestion+1]);
             setCurrentQuestion(currentQuestion+1);
+        }
+        else{
+            setResults([...results,{...question,isCorrect: question.answers[index] == question.correctAnswer,selectedAnswer:question.answers[index]}]);
+            onResult(results);
         }
         
     }
@@ -53,16 +50,16 @@ export default function QuestionWidget({ questions,onResult }:{ questions:Questi
                 <Flex my={4} direction={"column"} gap={4} width={"full"} justifyContent={"start"}>
                     {  
                         question.answers.map((answer,index)=>{
-                            return <Flex style={{userSelect: 'none'}} gap={4} borderStyle={"solid"} rounded={"xl"} transition={"all"} transitionDuration={"300"} border={"1px"}  alignItems={"center"} onClick={ currentQuestion>=0 && !isLastQuestion ?()=>next(index): ()=>setSelectedAnswer(index)} bg={ selectedAnswer == index ? "#8F95EE":""} fontSize={"sm"} borderColor={"white"} cursor={"pointer"} _hover={{bg:"#8F95EE"}} px={4} py={2} key={index}>
+                            return <Flex style={{userSelect: 'none'}} gap={4} borderStyle={"solid"} rounded={"xl"} transition={"all"} transitionDuration={"300"} border={"1px"}  alignItems={"center"} onClick={()=>next(index)} bg={ selectedAnswer == index ? "#8F95EE":""} fontSize={"sm"} borderColor={"white"} cursor={"pointer"} _hover={{bg:"#8F95EE"}} px={4} py={2} key={index}>
                                 {answer}
                             </Flex>
                         }) }
                 </Flex>
             </Flex>
             
-            { isLastQuestion && <Flex justifyContent={"center"}>
+            {/* { isLastQuestion && <Flex justifyContent={"center"}>
                 <Button  variant={"solid"} w={"70%"} bg={"#3B199C"} rounded={"full"} onClick={onSubmit} disabled={selectedAnswer == -1}>Check Your Results</Button>
-            </Flex>}
+            </Flex>} */}
 
         </Flex>
     </>
