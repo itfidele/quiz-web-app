@@ -1,4 +1,5 @@
 import { Question, Quiz } from "@/types/question";
+import { shuffle } from "@/utils/functions";
 
 
 
@@ -11,7 +12,7 @@ export default async function getQuiz() :Promise<Question[]> {
             category:question.category,
             id:question.category,
             correctAnswer: question.correctAnswer,
-            answers: [...question.incorrectAnswers, question.correctAnswer],
+            answers: shuffle([...question.incorrectAnswers, question.correctAnswer]),
             question: question.question.text,
             tags: question.tags,
             difficulty: question.difficulty,
